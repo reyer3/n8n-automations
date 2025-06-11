@@ -1,0 +1,48 @@
+{
+  "name": "📧 Template Base Email",
+  "description": "Plantilla reutilizable para configuración de emails",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "from-field",
+              "name": "from",
+              "value": "{{ $json.sender || 'noreply@empresa.com' }}",
+              "type": "string"
+            },
+            {
+              "id": "to-field",
+              "name": "to",
+              "value": "={{ Array.isArray($json.recipients) ? $json.recipients : [$json.recipients] }}",
+              "type": "array"
+            },
+            {
+              "id": "subject-field",
+              "name": "subject",
+              "value": "={{ $json.subject || 'Sin asunto' }}",
+              "type": "string"
+            },
+            {
+              "id": "body-field",
+              "name": "body",
+              "value": "={{ $json.body || 'Contenido del mensaje' }}",
+              "type": "string"
+            },
+            {
+              "id": "attachments-field",
+              "name": "attachments",
+              "value": "={{ $json.attachments || [] }}",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "name": "Email Config",
+      "notes": "Configuración base para emails con valores por defecto"
+    }
+  ]
+}

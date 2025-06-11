@@ -1,0 +1,87 @@
+{
+  "name": "Email Merge con Attachments",
+  "description": "Workflow para mergear configuración de email con attachments dinámicos",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f5240c30-b653-47e6-aa3d-76fa5b95986b",
+              "name": "from",
+              "value": "alfred@onbotgo.pe",
+              "type": "string"
+            },
+            {
+              "id": "c1212a90-b1ed-4691-a926-d54bcc0b063e",
+              "name": "to",
+              "value": "=[\"ana@onbotgo.com\", \"sara.morales@onbotgo.pe\", \"jorge@onbotgo.com\"]",
+              "type": "array"
+            },
+            {
+              "id": "479bfe70-ee26-4450-ad60-89c921041db0",
+              "name": "cc",
+              "value": "=[\"ricardo@onbotgo.cl\",\"bjulca@onbotgo.com\"]",
+              "type": "array"
+            },
+            {
+              "id": "aefcff77-9c1a-4e32-9f6e-8aeda40d9f2d",
+              "name": "subject",
+              "value": "=Informe de evaluación por horas: {{ $('Schedule Trigger').item.json['Readable time'] }}",
+              "type": "string"
+            },
+            {
+              "id": "ee4d4ba0-a2f2-46c6-aed7-7a93d7157397",
+              "name": "data",
+              "value": "Prueba de envio",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [180, -280],
+      "id": "destinatario",
+      "name": "Destinatario"
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "merge-complete",
+              "name": "email_config",
+              "value": "={{ Object.assign({}, $('Destinatario').item.json, { attachments: $json.data }) }}",
+              "type": "object"
+            },
+            {
+              "id": "to-string",
+              "name": "to_string",
+              "value": "={{ $('Destinatario').item.json.to.join(', ') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [400, -280],
+      "id": "merge",
+      "name": "Merge Config"
+    }
+  ],
+  "connections": {
+    "Destinatario": {
+      "main": [[{"node": "Merge Config", "type": "main", "index": 0}]]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
